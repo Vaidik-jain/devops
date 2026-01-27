@@ -1,13 +1,13 @@
-1. File & Directory Permissions
-Task:
-Create /devops_workspace
- ->mkdir devops_workspace
+1️⃣  File & Directory Permissions
+Tasks:
+a.Create /devops_workspace
+ command-> mkdir devops_workspace
 
-Create a file project_notes.txt.
- ->touch project_notes.txt
+b.Create a file project_notes.txt.
+ command-> touch project_notes.txt
 
-Set permissions: Owner can edit, group can read, others have no access.
- ->chmod 640 project_notes.txt
+c.Set permissions: Owner can edit, group can read, others have no access.
+ command-> chmod 640 project_notes.txt
 
 Use ls -l to verify permissions.
 total 0
