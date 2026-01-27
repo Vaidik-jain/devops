@@ -1,0 +1,14 @@
+1. File & Directory Permissions
+Task:
+Create /devops_workspace
+ ->mkdir devops_workspace
+
+Create a file project_notes.txt.
+ ->touch project_notes.txt
+
+Set permissions: Owner can edit, group can read, others have no access.
+ ->chmod 640 project_notes.txt
+
+Use ls -l to verify permissions.
+total 0
+-rw-r----- 1 vboxuser vboxuser 0 Jan 27 13:17 project_notes.txt
