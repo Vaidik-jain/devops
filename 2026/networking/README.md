@@ -47,4 +47,68 @@ Layer 1: Network Access - The "Physical Delivery." This combines the local drive
 ![tcp-layers](https://github.com/user-attachments/assets/9f29c76b-d51c-474e-8178-6e1077d41827)
 ## <br>
 ### B. **Protocols and Ports for DevOps**
+  #### 🔹 Protocols 
+ 
+A protocol is a set of rules that define how data is formatted, transmitted, and received between devices over a network.
 
+📌 Without protocols, computers wouldn’t understand how to communicate.
+
+ #### 🔹 Prots
+
+ A port is a logical endpoint that identifies which service or application should receive the incoming data.
+ Port Range
+
+- 0–65535 total ports
+
+- Well-known ports: 0–1023 (standard services)
+
+- Registered ports: 1024–49151
+
+- Dynamic/Private ports: 49152–65535
+
+#### 🔹 Role of Ports & Protocols in DevOps
+
+##### 1. Server Management & SSH
+
+  DevOps engineers access servers using:
+
+  SSH → TCP → Port 22
+
+  If port 22 is blocked → ❌ no server access.
+
+##### 2. Application Deployment
+
+  When you deploy apps:
+
+  Backend app might run on 8080
+
+  Frontend on 80/443
+
+##### 3. Containers & Kubernetes
+
+  Containers expose ports (EXPOSE 3000)
+
+  Kubernetes maps:
+
+  Service Port → Target Port → Pod Port
+
+  If ports don’t match → 🚫 app won’t be reachable.
+
+##### 4. CI/CD Pipelines
+
+  CI tools communicate using ports:
+
+  Jenkins → 8080
+
+  GitHub Webhooks → 443
+
+  Artifact repo (Nexus) → 8081
+
+  Ports must be open for pipeline to work
+
+#### 🔹 Some Important Ports to Remember
+
+<img width="512" height="512" alt="Imp ports" src="https://github.com/user-attachments/assets/1084a3a1-6819-43fd-ab3c-9ca5f04d0cad" />
+
+## <br>
+### C. **AWS EC2 and Security Groups**
