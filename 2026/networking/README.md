@@ -111,4 +111,57 @@ A protocol is a set of rules that define how data is formatted, transmitted, and
 <img width="512" height="512" alt="Imp ports" src="https://github.com/user-attachments/assets/1084a3a1-6819-43fd-ab3c-9ca5f04d0cad" />
 
 ## <br>
-### C. **AWS EC2 and Security Groups**
+### C. **Hands-On with Networking Commands**
+
+1.**ping**
+
+ping is used to check connectivity between your system and another system (server, website, IP address) over a network.
+
+
+<img width="512" height="247" alt="Screenshot from 2026-01-31 17-06-45" src="https://github.com/user-attachments/assets/44b3c500-a54b-4509-8879-a5b5e66eb3b9" />
+
+2.**Netstat**
+
+netstat (network statistics) is a command used to display network connections, open ports, routing tables, and listening services on a system.
+
+<img width="512" height="441" alt="Screenshot from 2026-01-31 12-16-48" src="https://github.com/user-attachments/assets/b2ed948f-e8d0-4455-a4d8-af832712b65a" />
+
+3.**Ifconfig**
+
+ifconfig (interface configuration) is used to view and configure network interfaces on a system.
+It shows IP address, MAC address, and interface status (UP/DOWN).
+
+<img width="512" height="453" alt="Screenshot from 2026-01-31 12-20-10" src="https://github.com/user-attachments/assets/2e857dc6-1880-4295-b745-9a571afcb4e2" />
+
+4.**Traceroute**
+
+traceroute is used to trace the path (route) that packets take from your system to a destination host.
+
+👉 It shows each hop (router) between source and destination and how long each hop takes.
+
+
+<img width="512" height="246" alt="Screenshot from 2026-01-31 17-16-59" src="https://github.com/user-attachments/assets/b95f2a80-0ee6-49b4-b6a2-a3c4d9287967" />
+
+5.**mtr**
+
+mtr (My Traceroute) is a combination of ping + traceroute.
+
+👉 It continuously traces the route to a destination and shows packet loss + latency for every hop in real time.
+
+6.**nslookup**
+
+nslookup (Name Server Lookup) is used to query DNS servers and find information about a domain name.
+
+It translates domain names ↔ IP addresses.
+
+<img width="512" height="213" alt="Screenshot from 2026-01-31 17-30-17" src="https://github.com/user-attachments/assets/53814984-e5b1-440d-978a-59f9463a6558" />
+
+7.**telnet**
+
+telnet is a network protocol & command-line tool used to test connectivity to a specific IP and port.
+In DevOps today, it’s mainly used to check if a port is open and reachable.
+
+8.**whois**
+
+whois is a command used to get ownership and registration details of a domain name or IP address.
+It tells you who owns a domain, when it was registered, and which registrar/DNS provider is used.
