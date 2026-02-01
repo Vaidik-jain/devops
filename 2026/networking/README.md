@@ -165,3 +165,19 @@ In DevOps today, it’s mainly used to check if a port is open and reachable.
 
 whois is a command used to get ownership and registration details of a domain name or IP address.
 It tells you who owns a domain, when it was registered, and which registrar/DNS provider is used.
+
+9.**curl**
+
+curl (Client URL) is a command-line tool used to send requests to URLs and interact with web servers & APIs.
+
+
+<img width="512" height="467" alt="Screenshot from 2026-02-01 14-56-56" src="https://github.com/user-attachments/assets/18206987-c4b7-44a7-8acc-32ceccd8f6a7" />
+
+10.**wget**
+
+wget is a command-line tool used to download files from the internet using HTTP, HTTPS, or FTP.
+
+11.**nmap**
+
+nmap (Network Mapper) is a tool used to scan networks, discover hosts, and identify open ports & services.
+
