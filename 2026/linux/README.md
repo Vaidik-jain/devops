@@ -1,4 +1,4 @@
-# ⭐Week 1: Networking Challenge <br>
+# ⭐Week 2: Linux System Administration & Automation <br>
 
 ## Tasks
 
