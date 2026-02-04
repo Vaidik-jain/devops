@@ -43,15 +43,22 @@ $AllowGroups devops_team
 
 
 #### 1️⃣.Create /devops_workspace
- command-> mkdir devops_workspace
 
-b.Create a file project_notes.txt.
+  command-> mkdir devops_workspace
+  
+<img width="512" height="67" alt="Screenshot (539)" src="https://github.com/user-attachments/assets/7e029fa4-14b7-4fb3-95ef-a0fcba9e39d8" />
+
+#### 2️⃣ Create a file project_notes.txt.
+
  command-> touch project_notes.txt
 
-c.Set permissions: Owner can edit, group can read, others have no access.
+<img width="512" height="99" alt="Screenshot (540)" src="https://github.com/user-attachments/assets/a145e530-3279-4761-b8ad-4657af17f69e" />
+
+#### 3️⃣ Set permissions: Owner can edit, group can read, others have no access.
+
+#### 4️⃣ Use ls -l to verify permissions
+
  command-> chmod 640 project_notes.txt
 
-d.Use ls -l to verify permissions.
+<img width="512" height="112" alt="Screenshot (541)" src="https://github.com/user-attachments/assets/6ef53fb0-4afa-49a5-b460-ea77d385f8fe" />
 
-total 0
--rw-r----- 1 vboxuser vboxuser 0 Jan 27 13:17 project_notes.txt
