@@ -56,9 +56,27 @@ $AllowGroups devops_team
 
 #### 3️⃣ Set permissions: Owner can edit, group can read, others have no access.
 
+
 #### 4️⃣ Use ls -l to verify permissions
 
  command-> chmod 640 project_notes.txt
 
 <img width="512" height="112" alt="Screenshot (541)" src="https://github.com/user-attachments/assets/6ef53fb0-4afa-49a5-b460-ea77d385f8fe" />
 
+### C. **Log File Analysis with AWK, Grep & Sed**
+#### 1️⃣.Create /devops_workspaceUse grep to find all occurrences of the word "authentication failure".
+
+<img width="512" height="585" alt="Screenshot from 2026-02-06 14-26-35" src="https://github.com/user-attachments/assets/6b86220a-5acd-425a-b8f0-34a71a1153a3" />
+
+#### 2️⃣ Use awk to extract timestamps and log levels.
+
+<img width="512" height="585" alt="Screenshot from 2026-02-06 14-31-27" src="https://github.com/user-attachments/assets/a0f913c6-cc37-4d61-9cc1-ebb65105515d" />
+
+#### 3️⃣ Use sed to replace all IP addresses with [REDACTED] for security.
+
+<img width="512" height="586" alt="Screenshot from 2026-02-06 14-38-22" src="https://github.com/user-attachments/assets/444111b8-82f4-4ccb-a125-c74961f9b654" />
+
+#### 4️⃣ Find the most frequent log entry using sort | uniq -c | sort -nr | head -10.
+
+
+<img width="512" height="517" alt="Screenshot from 2026-02-06 14-42-34" src="https://github.com/user-attachments/assets/9225d5cb-a189-47b9-8efe-21a3ab58f72d" />
