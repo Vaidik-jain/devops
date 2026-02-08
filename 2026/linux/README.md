@@ -80,3 +80,47 @@ $AllowGroups devops_team
 
 
 <img width="512" height="517" alt="Screenshot from 2026-02-06 14-42-34" src="https://github.com/user-attachments/assets/9225d5cb-a189-47b9-8efe-21a3ab58f72d" />
+
+### D. **Volume Management & Disk Usage**
+
+#### 1️⃣.Create a volume on aws.
+
+<img width="512" height="768" alt="Screenshot (542)" src="https://github.com/user-attachments/assets/b9b0e1f3-0146-409a-b44a-191f9ea31e9f" />
+
+#### 2️⃣ Create a directory /mnt/devops_data.
+
+<img width="512" height="116" alt="Screenshot (543)" src="https://github.com/user-attachments/assets/54dec6ee-38a3-4284-bdbf-10e41971a0c0" />
+
+#### 3️⃣ Mount a new volume (or loop device for local practice).
+
+<img width="512" height="420" alt="Screenshot (544)" src="https://github.com/user-attachments/assets/01f28605-892c-45a6-b83a-e8c5045d0918" />
+
+#### 4️⃣ Verify using df -h.
+
+<img width="512" height="178" alt="Screenshot (545)" src="https://github.com/user-attachments/assets/63ad0a23-1022-403b-8361-ab24b17a03e1" />
+
+### E. **Process Management & Monitoring**
+
+#### 1️⃣.Start a background process (ping google.com > ping_test.log &).
+
+<img width="512" height="57" alt="Screenshot (547)" src="https://github.com/user-attachments/assets/e5c74d34-fa44-4206-88dd-07e09308e7dc" />
+
+#### 2️⃣ Use ps, top, and htop to monitor it.
+
+1.ps -> ps aux | grep ping
+
+
+<img width="512" height="84" alt="Screenshot (548)" src="https://github.com/user-attachments/assets/8bbe1b2a-20ba-45f9-b228-4361abc147e5" />
+
+2.top
+
+<img width="512" height="668" alt="Screenshot (549)" src="https://github.com/user-attachments/assets/ffa0668a-1c8f-44f7-b9cb-812d5af2f98a" />
+
+3.htop 
+
+<img width="512" height="702" alt="Screenshot (550)" src="https://github.com/user-attachments/assets/0c36d0b8-f784-48fb-a03b-f9d79283f8d7" />
+
+#### 3️⃣ Kill the process and verify it's gone.
+
+<img width="512" height="172" alt="Screenshot (551)" src="https://github.com/user-attachments/assets/3c909011-b0ad-4ec3-9613-e08b1996a455" />
+
