@@ -18,37 +18,37 @@
 
    **Compare Virtualization vs. Containerization and explain why containerization is the preferred approach for microservices and CI/CD pipelines.**
 
-  1️⃣ Virtualization
+1️⃣ Virtualization
 
-    Virtualization abstracts the hardware. Each Virtual Machine (VM) includes a full copy of an operating system, the application, and all necessary binaries and libraries.
+Virtualization abstracts the hardware. Each Virtual Machine (VM) includes a full copy of an operating system, the application, and all necessary binaries and libraries.
 
-   - Hypervisor: The software (like VMware or Hyper-V) that creates and runs VMs.
+- Hypervisor: The software (like VMware or Hyper-V) that creates and runs VMs.
 
-   - Size: Large (gigabytes) because each VM carries its own Guest OS.
+- Size: Large (gigabytes) because each VM carries its own Guest OS.
 
-   - Startup: Slow (minutes) because the entire OS has to boot up.
+- Startup: Slow (minutes) because the entire OS has to boot up.
      
-  2️⃣ Containerization
+2️⃣ Containerization
 
-  Containerization abstracts the app layer. Containers share the host machine’s OS kernel and isolate the application processes from the rest of the system.
+Containerization abstracts the app layer. Containers share the host machine’s OS kernel and isolate the application processes from the rest of the system.
 
-    - Container Engine: The software (like Docker) that manages containers.
+ - Container Engine: The software (like Docker) that manages containers.
 
-    - Size: Small (megabytes) because they only contain the app and its dependencies.
+ - Size: Small (megabytes) because they only contain the app and its dependencies.
 
-    - Startup: Instant (seconds) because the OS is already running.
+ - Startup: Instant (seconds) because the OS is already running.
     - 
-  **Why Containers Win for Microservices**
-    - **Efficiency:** Since containers don't need a separate OS, you can pack far more services onto a single server than you could with VMs. This saves massive amounts of money on cloud infrastructure.
+**Why Containers Win for Microservices**
+ - **Efficiency:** Since containers don't need a separate OS, you can pack far more services onto a single server than you could with VMs. This  saves massive amounts of money on cloud infrastructure.
 
-    - **Scalability:** If your "Payment Service" gets a sudden spike in traffic, you can spin up ten new containers in seconds. Doing that with VMs would take far too long to meet the demand.
+ - **Scalability:** If your "Payment Service" gets a sudden spike in traffic, you can spin up ten new containers in seconds. Doing that with VMs would take far too long to meet the demand.
 
-    - **Independence:** Each microservice can be written in a different language (Python, Java, Go) within its own container without worrying about library conflicts on the host server.
- ### Task 2: Create a Dockerfile for a Sample Project
+  - **Independence:** Each microservice can be written in a different language (Python, Java, Go) within its own container without worrying about library conflicts on the host server.
+### Task 2: Create a Dockerfile for a Sample Project
  #### 1. Select or Create a Sample Application:
-      - Write a Dockerfile:
-        - Create a Dockerfile that defines how to build an image for your application.
-        - Include comments in your Dockerfile explaining each instruction.
+ - Write a Dockerfile:
+    - Create a Dockerfile that defines how to build an image for your application.
+    - Include comments in your Dockerfile explaining each instruction.
 <img width="512" height="367" alt="Screenshot (584)" src="https://github.com/user-attachments/assets/11f78974-4435-43b9-aaad-6e99a89c7ba8" />
 
 - Build your image using:
@@ -56,8 +56,6 @@
 docker build -t python-app-full:latest .
 
 <img width="512" height="218" alt="Screenshot (589)" src="https://github.com/user-attachments/assets/b7829e07-456e-4c92-a22e-d40e6e04433e" />
-
-
 
 #### 2. Verify Your Build:
 -Run your container locally to ensure it works as expected:
@@ -72,7 +70,6 @@ docker ps
 docker logs <container_id>
 
 <img width="512" height="224" alt="Screenshot (587)" src="https://github.com/user-attachments/assets/4f0ca0bb-1016-4c5e-863d-566ab5054b0f" />
-
 
 ### Task 3: Explore Docker Terminologies and Components
 
@@ -241,3 +238,85 @@ This improves readability, maintainability, and organization of the container bu
 In a traditional Docker build, all build tools and dependencies remain in the final image, which can lead to very large images.
 With multi-stage builds, only the essential runtime files and dependencies are copied into the final stage.
 As a result, image sizes can often be reduced by 50–80% or more, depending on the application and build tools used.
+
+### Task 5: Manage Your Image with Docker Hub
+
+#### 1.Tag Your Image:
+
+- command > docker image tag python-app-mini:latest vaidikjain/python-app-mini:latest
+
+#### 2.Push Your Image to Docker Hub:
+- command > docker push vaidikjain/python-app-mini:latest
+  
+<img width="512" height="685" alt="Screenshot (591)" src="https://github.com/user-attachments/assets/d7eaf5f5-db0f-4c78-9655-2ddf20d7a141" />
+
+
+<img width="512" height="334" alt="Screenshot (592)" src="https://github.com/user-attachments/assets/81b873ad-a8bb-4e7a-8ad3-df59a65a160b" />
+
+### Task 6: Persist Data with Docker Volumes
+
+#### 1.Create a Docker Volume:
+
+- command > docker volume create flask_volume
+
+<img width="512" height="147" alt="Screenshot (593)" src="https://github.com/user-attachments/assets/19496078-867a-4b7b-b75b-2bd3062af8bc" />
+
+
+#### 2.Run a Container with the Volume:
+
+- command > docker run -d -v flask_volume:/app/data -p 80:80 python-app-mini:latest
+
+<img width="512" height="201" alt="Screenshot (594)" src="https://github.com/user-attachments/assets/b469b11a-9442-4f9e-8464-324afd6f525b" />
+
+#### 3.Document the Process:
+
+**explain how Docker volumes help with data persistence and why they are useful.**
+
+Docker volumes are used to store data outside of a container’s filesystem. Normally, when a container stops or is deleted, any data stored inside the container is lost. Volumes solve this problem by keeping the data on the host machine, separate from the container lifecycle.
+
+When a Docker volume is mounted to a container directory, any data written to that directory is stored in the volume instead of inside the container. This means:
+
+ - If the container stops or is removed, the data remains safe in the volume.
+ - A new container can mount the same volume and continue using the existing data.
+ - Data can be shared between multiple containers if they mount the same volume.
+
+### Task 7: Configure Docker Networking
+
+#### 1. Create a Custom Docker Network:
+
+- command > docker network create flask_network
+  
+<img width="512" height="104" alt="Screenshot (595)" src="https://github.com/user-attachments/assets/506e66a9-3e96-4d73-9e81-a11c8c8a2ae8" />
+
+#### 2. Run Containers on the Same Network:
+
+- Run two containers (e.g., your sample app and a simple database like MySQL) on the same network to demonstrate inter-container communication:
+ 
+    docker run -d --name sample-app --network my_network <your-username>/sample-app:v1.0
+    
+    docker run -d --name my-db --network my_network -e MYSQL_ROOT_PASSWORD=root mysql:latest
+
+<img width="512" height="393" alt="Screenshot (596)" src="https://github.com/user-attachments/assets/4e9680ba-fb34-496c-9ae5-7b7cce1f0770" />
+
+#### 3. Document the Process:
+ **describe how Docker networking enables container communication and its significance in multi-container applications.**
+
+ Docker networking allows Docker containers to communicate with each other, with the host system, and with external networks. Since containers run in isolated environments, networking provides a way to connect them so they can exchange data.
+
+**Key Points**
+
+- Each container gets its own network interface and IP address.
+
+- Containers on the same Docker network can communicate directly.
+
+- Communication can happen using container names, IP addresses, or exposed ports.
+
+ **Common Types of Docker Networks**
+
+- Bridge Network – Default network used for communication between containers on the same host.
+
+- Host Network – The container shares the host machine’s network.
+
+- Overlay Network – Connects containers running on different Docker hosts (used in Docker Swarm).
+
+- None Network – Disables networking for the container.
