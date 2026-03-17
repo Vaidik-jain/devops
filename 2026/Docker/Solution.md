@@ -320,3 +320,252 @@ When a Docker volume is mounted to a container directory, any data written to th
 - Overlay Network – Connects containers running on different Docker hosts (used in Docker Swarm).
 
 - None Network – Disables networking for the container.
+
+### Task 8: Orchestrate with Docker Compose
+
+#### 1.Create a docker-compose.yml File:
+
+- Write a docker-compose.yml
+
+<img width="512" height="381" alt="Screenshot (600)" src="https://github.com/user-attachments/assets/dabffbf5-0b0b-49bc-ad1c-a05a2ac57acf" />
+
+#### 2.Deploy Your Application:
+
+- Bring up your application using:
+   command > docker-compose up -d
+
+<img width="512" height="110" alt="Screenshot (599)" src="https://github.com/user-attachments/assets/8a8e5e72-741e-474a-b17e-4d4a98fb42cf" />
+
+-Test the setup, then shut it down using:
+   command > docker-compose down
+ <img width="512" height="112" alt="image" src="https://github.com/user-attachments/assets/9551a646-47b3-45b8-bf47-8881d37b923e" />
+
+#### 3.Document the Process:
+
+**🔹 Version**
+version: "3.8"
+
+Specifies the Docker Compose file format version.
+
+Version 3.8 is commonly used and supports modern Docker features.
+
+**🔹 Services**
+services:
+
+Defines all the containers (services) that will run as part of the application.
+
+In this setup, we have one service: MySQL.
+
+**🔹 MySQL Service**
+mysql:
+  image: mysql:latest
+
+Creates a container named mysql.
+
+Uses the official MySQL image from Docker Hub.
+
+latest pulls the most recent version of MySQL.
+
+**🔹 Container Name**
+container_name: mysql
+
+Assigns a custom name to the container.
+
+Makes it easier to reference instead of using random container IDs.
+
+**🔹 Environment Variables**
+environment:
+  MYSQL_ROOT_PASSWORD: admin
+  MYSQL_DATABASE: tws_db
+  MYSQL_USER: admin
+  MYSQL_PASSWORD: admin
+
+Used to configure MySQL during container startup:
+
+MYSQL_ROOT_PASSWORD: Password for root user
+
+MYSQL_DATABASE: Automatically creates a database named tws_db
+
+MYSQL_USER: Creates a new user (admin)
+
+MYSQL_PASSWORD: Password for the new user
+
+**🔹 Ports**
+ports:
+  - "3306:3306"
+
+Maps port 3306 (host) to 3306 (container).
+
+Allows external applications (like Flask or MySQL client) to connect to the database.
+
+**🔹 Volumes**
+volumes:
+  - ./flask_volume:/var/lib/mysql
+
+Mounts a directory from the host to the container.
+
+/var/lib/mysql is where MySQL stores its data.
+
+Ensures data persistence (data is not lost if container stops or is deleted).
+
+**🔹 Networks**
+networks:
+  - flask_network
+
+Connects the MySQL container to a custom network.
+
+Enables communication with other containers (e.g., Flask app).
+
+**🔹 Named Volumes (Global)**
+volumes:
+  flask_volume:
+
+Declares a named volume managed by Docker.
+
+Can be reused by multiple services.
+
+**🔹 Networks (Global)**
+networks:
+  flask_network:
+
+Defines a custom bridge network.
+
+Ensures isolated and secure communication between containers.
+
+### Task 10: Documentation and Critical Reflection
+#### 1.Update solution.md:
+- List all the commands and steps you executed.
+- Provide explanations for each task and detail any improvements made (e.g., image optimization with multi-stage builds).
+
+**🔹 Commands and Steps Executed**
+
+**🐳 Docker Basics & Image Creation**
+docker build -t python-app-mini:latest .
+
+docker images
+
+docker run -d -p 80:80 python-app-mini:latest
+
+docker ps
+
+docker logs <container_id>
+
+Built the Docker image from a Dockerfile.
+
+Ran the container and exposed it on port 80.
+
+Verified running containers and checked logs.
+
+**📦 Docker Hub Operations**
+
+docker tag python-app-mini:latest <your-username>/sample-app:v1.0
+
+docker push <your-username>/sample-app:v1.0
+
+docker pull <your-username>/sample-app:v1.0
+
+Tagged the image for versioning.
+
+Pushed and pulled images from Docker Hub.
+
+**💾 Docker Volumes (Data Persistence)**
+
+docker volume create flask_volume
+
+docker run -d -v flask_volume:/app/data python-app-mini
+
+Created a volume to persist data.
+
+Ensured data remains even if the container is removed.
+
+**🌐 Docker Networking**
+
+docker network create flask_network
+
+docker run -d --network flask_network --name mysql mysql:latest
+
+Created a custom network.
+
+Enabled communication between containers (e.g., Flask ↔ MySQL).
+
+**⚙️ Docker Compose**
+
+docker compose up
+
+docker compose down
+
+docker compose config
+
+Used Docker Compose to manage multi-container setup.
+
+Validated configuration and started services.
+
+#### 🔹 Improvements Made
+**✅ Multi-Stage Build Optimization**
+
+Reduced image size by separating build and runtime stages.
+
+Removed unnecessary dependencies from the final image.
+
+Result:
+
+Smaller image size
+
+Faster deployment
+
+Improved security
+
+**✅ Use of Volumes**
+
+Ensured database and application data persistence.
+
+Prevented data loss when containers restart or are deleted.
+
+**✅ Docker Networking**
+
+Enabled seamless communication between services.
+
+Avoided hardcoding IP addresses by using service names.
+
+**✅ Docker Compose Usage**
+
+Simplified multi-container deployment.
+
+Centralized configuration for services, volumes, and networks.
+
+**✅ Security Enhancement**
+
+Performed vulnerability scanning using Trivy.
+
+Identified outdated dependencies and potential risks.
+
+Learned importance of secure base images.
+
+#### 2.Reflect on Docker’s Impact:
+- Write a brief reflection on the importance of Docker in modern software development, discussing its benefits and potential challenges.
+
+**🔹 Reflection on Docker’s Impact**
+
+Docker has significantly transformed modern software development by enabling containerization, which ensures consistency across different environments. Developers can package applications along with their dependencies, eliminating the “it works on my machine” problem.
+
+**🚀 Benefits of Docker**
+
+- Portability: Applications run consistently across development, testing, and production.
+
+- Scalability: Containers can be easily scaled up or down.
+
+- Efficiency: Lightweight compared to virtual machines.
+
+- Faster Deployment: Simplifies CI/CD pipelines.
+
+- Isolation: Each container runs independently, reducing conflicts.
+
+**⚠️ Challenges of Docker**
+
+- Learning Curve: Beginners may struggle with concepts like networking and volumes.
+
+- Security Risks: Vulnerabilities in base images can affect applications.
+
+- Complexity at Scale: Managing many containers requires orchestration tools like Kubernetes.
+
+- Debugging Difficulty: Troubleshooting inside containers can be tricky.
