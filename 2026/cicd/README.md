@@ -20,7 +20,7 @@
   - Note any issues you encountered and how you resolved them.
    - Already Done
 
-## Task 3: Configure and Scale Jenkins Agents/Nodes
+## Task 2: Configure and Scale Jenkins Agents/Nodes
 
 ### 1.Set Up Multiple Agents:
 - Configure at least two agents (e.g., one Linux-based and one Windows-based) in Jenkins.
@@ -38,3 +38,18 @@
 - Create jobs that run in parallel across these agents.
 
 <img width="512" height="768" alt="Screenshot (620)" src="https://github.com/user-attachments/assets/58031db9-d784-4fad-b5c0-cc486d4510b9" />
+
+## Task 3: Push the Docker Image to DockerHub
+
+### 1.Update the Docker Credentials on Jenkins
+
+<img width="512" height="704" alt="Screenshot (624)" src="https://github.com/user-attachments/assets/9f57ea22-b0b7-495e-8a43-6f89a8f61924" />
+
+### 2.Add a new stage to pipeline 
+
+<img width="512" height="245" alt="Screenshot (625)" src="https://github.com/user-attachments/assets/64b66957-5d1e-4769-9e65-88cbc6f36f59" />
+
+### 3.Verify the push on DockerHub
+
+<img width="512" height="451" alt="Screenshot (626)" src="https://github.com/user-attachments/assets/aec1aa6b-4329-4f76-b30b-aa7d71c9607a" />
+
