@@ -53,3 +53,24 @@
 
 <img width="512" height="451" alt="Screenshot (626)" src="https://github.com/user-attachments/assets/aec1aa6b-4329-4f76-b30b-aa7d71c9607a" />
 
+## Task 4: Explain about github-Webhook
+
+GitHub Webhooks let GitHub automatically notify Jenkins when an event (like a code push) happens, so Jenkins can trigger a build instantly (no polling needed).
+
+**⚙️ Steps**
+
+In Jenkins job → enable “GitHub hook trigger for GITScm polling”
+
+Copy webhook URL:
+
+http://<jenkins-url>/github-webhook/
+
+In GitHub → Repo → Settings → Webhooks → Add:
+
+Payload URL: above URL
+
+Content type: application/json
+
+Event: Push
+
+Save → Push code → Jenkins triggers automatically 🚀
