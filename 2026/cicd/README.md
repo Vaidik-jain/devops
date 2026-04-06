@@ -21,3 +21,20 @@
    - Already Done
 
 ## Task 3: Configure and Scale Jenkins Agents/Nodes
+
+### 1.Set Up Multiple Agents:
+- Configure at least two agents (e.g., one Linux-based and one Windows-based) in Jenkins.
+- Use Docker containers or VMs to simulate different environments.
+
+<img width="512" height="382" alt="Screenshot (622)" src="https://github.com/user-attachments/assets/f2f07a26-7e9d-461b-92ef-9f3cecab509e" />
+
+### 2.Label Agents:
+
+- Assign labels (e.g., linux, windows) and modify your Jenkinsfile to run appropriate stages on the correct agent.
+
+<img width="512" height="768" alt="Screenshot (621)" src="https://github.com/user-attachments/assets/113f2d2d-0c0c-4ea0-b0c0-c330895bd83c" />
+
+### 3.Run Parallel Jobs:
+- Create jobs that run in parallel across these agents.
+
+<img width="512" height="768" alt="Screenshot (620)" src="https://github.com/user-attachments/assets/58031db9-d784-4fad-b5c0-cc486d4510b9" />
