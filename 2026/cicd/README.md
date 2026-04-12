@@ -74,3 +74,152 @@ Content type: application/json
 Event: Push
 
 Save → Push code → Jenkins triggers automatically 🚀
+
+## Task 5 :Implement and Test RBAC in a Multi-Team Environment
+
+### 1.Configure RBAC:
+
+- Use Matrix-based security or the Role Strategy Plugin to create roles (e.g., Admin, Developer, Tester).
+- Define permissions for each role.
+
+  <img width="512" height="562" alt="Screenshot (629)" src="https://github.com/user-attachments/assets/6db04214-3250-40e6-9278-a400c548c80f" />
+
+### 2. Create Test Accounts:
+- Simulate real-world usage by creating user accounts for each role and verifying access.
+
+<img width="512" height="768" alt="Screenshot (630)" src="https://github.com/user-attachments/assets/04c9bf16-c08b-4d09-abdf-f72ce90b11c1" />
+
+## Task 6: Develop and Integrate a Jenkins Shared Library
+
+### 1.Create a Shared Library Repository:
+Set up a separate Git repository that hosts your shared library code.
+Develop reusable functions (e.g., a function for sending notifications or a common test stage).
+
+<img width="512" height="340" alt="Screenshot (635)" src="https://github.com/user-attachments/assets/7e351b5e-a6ea-455a-bf48-20fa99c52d78" />
+
+### 2.Integrate the Library:
+- Update your Jenkinsfile(s) from previous tasks to load and use the shared library.
+- Use syntax similar to:
+
+@Library('my-shared-library') _
+
+pipeline {
+
+    // pipeline code using shared functions
+    
+}
+
+<img width="512" height="614" alt="Screenshot (636)" src="https://github.com/user-attachments/assets/f3aaba43-1d20-491b-ad18-dc4786b5d7e0" />
+
+## Task 7: Troubleshooting, Monitoring & Advanced Debugging
+
+### 1. Jenkins Agent Going Offline
+
+**Issue:**
+
+Jenkins agent frequently disconnects and goes offline.
+
+**Cause:**
+
+- Low disk space
+- Agent process crashing
+- Network instability
+
+**Solution:**
+
+Free disk space:
+
+- docker system prune -a -f
+- rm -rf /home/ubuntu/jenkins/workspace/*
+
+**Restart agent:**
+
+- sudo systemctl restart jenkins
+- Run agent as a service for auto-restart.
+
+### 2. Disk Space Full (EC2)
+
+**Issue:**
+
+Disk usage reaching ~85–100%
+
+**Cause:**
+
+- Docker images & containers
+- Jenkins build artifacts
+- Logs and cache files
+
+**Solution:**
+
+- Clean Docker:
+
+docker system prune -a -f
+
+docker volume prune -f
+
+- Remove old builds:
+
+rm -rf /var/lib/jenkins/jobs/*/builds/*
+
+### 3. Permission Denied Errors
+
+**Issue:**
+
+Jenkins unable to access workspace or files
+
+**Cause:**
+
+Incorrect file ownership or permissions
+
+**Solution:**
+
+sudo chown -R ubuntu:ubuntu /home/ubuntu/jenkins
+
+sudo chmod -R 755 /home/ubuntu/jenkins
+
+## Task 8: Integrate Email Notifications for Build Events
+
+### ⚙️ Configuration Steps
+
+**1. Install Required Plugin**
+
+Go to Manage Jenkins → Manage Plugins
+
+Install: Email Extension Plugin
+
+**2. Configure SMTP Settings**
+
+Navigate to: Manage Jenkins → Configure System
+
+Scroll to Extended E-mail Notification
+
+**🧪 Pipeline Configuration**
+
+pipeline {
+    agent any
+
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Building project...'
+            }
+        }
+    }
+
+    post {
+        success {
+            emailext (
+                subject: "SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body: "Build succeeded.\nCheck details: ${env.BUILD_URL}",
+                to: "your-email@gmail.com"
+            )
+        }
+        failure {
+            emailext (
+                subject: "FAILED: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body: "Build failed.\nCheck details: ${env.BUILD_URL}",
+                to: "your-email@gmail.com"
+            )
+        }
+    }
+}
