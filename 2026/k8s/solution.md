@@ -243,3 +243,36 @@ Deploy a component of the SpringBoot BankApp application that consumes external 
   
    <img width="858" height="190" alt="Screenshot (654)" src="https://github.com/user-attachments/assets/bae3948f-111f-4a22-aa10-648f59669cf2" />.
 
+## Task 6: Autoscaling & Resource Management
+
+**Scenario:**  
+Implement autoscaling for a component of the SpringBoot BankApp application using the Horizontal Pod Autoscaler (HPA). Optionally, explore Vertical Pod Autoscaling (VPA) and ensure the Metrics Server is running.
+
+**Steps:**
+1. **Deploy an Application with Resource Requests:**  
+   - Deploy an application with defined resource requests and limits.
+    resources:
+
+     ```bash
+     requests:
+            memory: "32Mi"
+            cpu: "50m"
+          limits:
+            memory: "64Mi"
+            cpu: "100m"
+     ```
+          
+2. **Create an HPA Resource:**  
+   - Write a YAML file for an HPA that scales the number of replicas based on CPU or memory usage.
+   
+   <img width="512" height="297" alt="Screenshot (656)" src="https://github.com/user-attachments/assets/308a81c6-5d25-4088-9207-d58f13a2836d" />
+
+3. **(Optional) Implement VPA & Metrics Server:**  
+   - Optionally, deploy a VPA and verify that the Metrics Server is running.
+4. **Document in `solution.md`:**  
+   - Include the YAML files and explain how HPA (and optionally VPA) work.
+   - Discuss the benefits of autoscaling in production.
+
+  **“Autoscaling improves application reliability, performance, and cost efficiency by dynamically adjusting resources based on demand. It ensures high availability during traffic spikes while minimizing resource usage during low traffic periods, making systems both resilient and cost-effective.”**
+  
+
