@@ -66,3 +66,180 @@ Inside the worker nodes, your applications run inside Pods. A Pod is the smalles
      kubectl apply -f pod.yaml
      ```
   <img width="712" height="320" alt="Screenshot (640)" src="https://github.com/user-attachments/assets/e5239d85-3454-48a8-a4ad-ab3562f53d5a" />
+
+## Task 2: Deploy and Manage Core Kubernetes Objects
+
+**Scenario:**  
+Deploy core Kubernetes objects for the SpringBoot BankApp application, including Deployments, ReplicaSets, StatefulSets, DaemonSets, and use Namespaces to isolate resources.
+
+**Steps:**
+1. **Create a Namespace:**  
+  - Write a YAML file to create a Namespace for the SpringBoot BankApp application.
+   <img width="409" height="149" alt="Screenshot (642)" src="https://github.com/user-attachments/assets/94c3f8f5-9891-4a7c-a5cb-212f47c18d6a" />
+   - Apply the YAML:
+     ```bash
+     kubectl apply -f namespace.yaml
+     ```
+   <img width="512" height="190" alt="image" src="https://github.com/user-attachments/assets/9adac0b9-3711-4153-84cf-75eb4c374265" />
+
+
+1. **Deploy a Deployment:**  
+- Create a YAML file for a Deployment (within your Namespace) that manages a set of Pods running a component of SpringBoot BankApp.
+
+   <img width="1092" height="573" alt="Screenshot (645)" src="https://github.com/user-attachments/assets/5f5ea1d9-f068-436b-854d-aeb749ff4ddb" />
+
+   - Verify that a ReplicaSet is created automatically.
+  
+   <img width="512" height="81" alt="Screenshot (646)" src="https://github.com/user-attachments/assets/f1520da6-88f0-4948-88d2-1a5235129ce9" />
+
+2. **Deploy a StatefulSet:**  
+   - Write a YAML file for a StatefulSet (for example, for a database component) and apply it.
+
+   <img width="689" height="631" alt="Screenshot (647)" src="https://github.com/user-attachments/assets/1bae7274-b029-4448-a441-efe29035f267" />
+
+3. **Deploy a DaemonSet:**  
+   - Create a YAML file for a DaemonSet to run a Pod on every node.
+4. **Document in `solution.md`:**  
+   - Include the YAML files for the Namespace, Deployment, StatefulSet, and DaemonSet.
+
+### 🔹 Namespace
+- Used to isolate resources
+- Helps in managing environments (dev, staging, prod)
+- Avoids naming conflicts
+
+#### 👉 Example: bankapp-namespace
+
+### 🔹 Deployment
+- Manages stateless applications
+- Ensures desired number of Pods
+- Supports:
+  - scaling
+  - rolling updates
+  - self-healing
+
+#### 👉 Used for:
+
+ - Spring Boot backend
+ - Frontend apps
+   
+### 🔹 ReplicaSet
+- Ensures a fixed number of Pods are running
+- Automatically created by Deployment
+
+#### 👉 Rarely used directly
+
+### 🔹 StatefulSet
+- Used for stateful applications
+- Provides:
+  - stable pod names (mysql-0)
+  - persistent storage
+  - ordered deployment
+
+#### 👉 Used for:
+
+  - Databases (MySQL, MongoDB)
+### 🔹 DaemonSet
+- Runs one pod per node
+- Automatically schedules on all nodes
+
+#### 👉 Used for:
+
+- logging agents
+- monitoring tools
+- node-level services
+   - Explain the differences between these objects and when to use each.
+ 
+⚖️ Key Differences
+Feature	    |Deployment |	StatefulSet |	DaemonSet
+
+Use case	    |Stateless apps |	Stateful apps |	Node-level pods
+
+Pod identity |Random	| Stable | One per node
+
+Storage	    |Not required |	Required	| Not required
+
+Scaling	    |Yes	| Limited |	Auto (per node)
+
+## Task 3: Networking & Exposure – Create Services, Ingress, and Network Policies
+
+**Scenario:**  
+Expose your SpringBoot BankApp application to internal and external traffic by creating Services and configuring an Ingress, while using Network Policies to secure communication.
+
+**Steps:**
+1. **Create a Service:**  
+   - Write a YAML file for a Service of type ClusterIP.
+   
+  <img width="825" height="369" alt="Screenshot (648)" src="https://github.com/user-attachments/assets/7bb3f43e-f8cf-4e35-90e6-bde7c5b2ff7a" />
+
+   - Modify the Service type to NodePort or LoadBalancer and apply the YAML.
+
+<img width="774" height="561" alt="Screenshot (649)" src="https://github.com/user-attachments/assets/98b9af56-49f5-4d13-a3eb-939528479832" />
+
+
+2. **Configure an Ingress:**  
+   - Create an Ingress resource to route external traffic to your application.
+   
+   <img width="999" height="489" alt="Screenshot (650)" src="https://github.com/user-attachments/assets/c3ab1927-de78-45bb-87c7-42af46da72f0" />
+
+3. **Implement a Network Policy:**  
+   - Write a YAML file for a Network Policy that restricts traffic to your application Pods.
+
+  <img width="1366" height="451" alt="Screenshot (651)" src="https://github.com/user-attachments/assets/434c77de-c127-41c4-b233-2bdbc095055f" />
+
+
+     
+4. **Document in `solution.md`:**  
+   - Include the YAML files for your Service, Ingress, and Network Policy.
+### 🔹 Ingress
+- Acts as a smart router
+- Routes HTTP/HTTPS traffic to services
+#### Supports:
+- Host-based routing (bankapp.local)
+- Path-based routing (/api, /login)
+- Requires an Ingress Controller (like NGINX)
+### 🔹 Network Policy
+Works like a firewall inside Kubernetes
+#### Controls:
+Which pods can talk to which pods
+- Improves security
+- Default behavior:
+- If policy exists → deny all unless allowed
+
+## Task 4: Storage Management – Use Persistent Volumes and Claims
+
+**Scenario:**  
+Deploy a component of the SpringBoot BankApp application that requires persistent storage by creating Persistent Volumes (PV), Persistent Volume Claims (PVC), and a StorageClass for dynamic provisioning.
+
+**Steps:**
+1. **Create a Persistent Volume and Claim:**  
+   - Write YAML files for a static PV and a corresponding PVC.
+     
+     <img width="880" height="267" alt="Screenshot (652)" src="https://github.com/user-attachments/assets/f7271ef3-769a-445e-9701-52d67e42ee2f" />
+
+2. **Deploy an Application Using the PVC:**  
+   - Modify a Pod or Deployment YAML to mount the PVC.
+   
+     <img width="436" height="208" alt="Screenshot (653)" src="https://github.com/user-attachments/assets/cce42325-ea9f-41c6-b3a1-6610c025d719" />
+
+3. **Document in `solution.md`:**  
+   - Include your PV, PVC, and application YAML.
+   - Explain how StorageClasses facilitate dynamic storage provisioning.
+   
+   “StorageClasses enable dynamic provisioning by allowing Kubernetes to automatically create PersistentVolumes when a PersistentVolumeClaim is requested, using a defined provisioner and configuration. This removes the need for manual storage management and ensures scalable, on-demand resource allocation.”
+
+## Task 5: Configuration & Secrets Management with ConfigMaps and Secrets
+
+**Scenario:**  
+Deploy a component of the SpringBoot BankApp application that consumes external configuration and sensitive data using ConfigMaps and Secrets.
+
+**Steps:**
+1. **Create a ConfigMap:**  
+- Write a YAML file for a ConfigMap containing configuration data.
+     
+   <img width="1260" height="177" alt="Screenshot (655)" src="https://github.com/user-attachments/assets/6a022e84-0b80-4fb5-a81a-a70bd90ed4bf" />
+
+2. **Create a Secret:**  
+- Write a YAML file for a Secret containing sensitive information.
+  
+   <img width="858" height="190" alt="Screenshot (654)" src="https://github.com/user-attachments/assets/bae3948f-111f-4a22-aa10-648f59669cf2" />.
+
