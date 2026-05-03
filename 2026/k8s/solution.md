@@ -276,3 +276,158 @@ Implement autoscaling for a component of the SpringBoot BankApp application usin
   **“Autoscaling improves application reliability, performance, and cost efficiency by dynamically adjusting resources based on demand. It ensures high availability during traffic spikes while minimizing resource usage during low traffic periods, making systems both resilient and cost-effective.”**
   
 
+## Task 7: Security & Access Control
+
+**Scenario:**  
+Secure your Kubernetes cluster by implementing Role-Based Access Control (RBAC) and additional security measures.
+
+### Part A: RBAC Implementation
+**Steps:**
+1. **Configure RBAC:**  
+   - Create roles and role bindings using YAML files for specific user groups (e.g., Admin, Developer, Tester).
+   
+#### 🔹 Admin Role (Full access in namespace)
+     
+     apiVersion: rbac.authorization.k8s.io/v1
+     kind: Role
+     metadata:
+       namespace: bankapp-namespace
+       name: admin-role
+     rules:
+     apiGroups: ["", "apps", "extensions"]
+       resources: ["*"]
+       verbs: ["*"]
+
+#### 🔹 Developer Role (Limited – no delete)
+     
+     apiVersion: rbac.authorization.k8s.io/v1
+     kind: Role
+     metadata:
+       namespace: bankapp-namespace
+       name: developer-role
+     rules:
+      apiGroups: ["", "apps"]
+      resources: ["pods", "deployments", "services"]
+      verbs: ["get", "list", "watch", "create", "update"]
+**👉 ❌ No delete permission**
+#### 🔹 Tester Role (Read-only)
+
+     apiVersion: rbac.authorization.k8s.io/v1
+     kind: Role
+     metadata:
+       namespace: bankapp-namespace
+       name: tester-role
+     rules:
+     apiGroups: ["", "apps"]
+     resources: ["pods", "services", "deployments"]
+     verbs: ["get", "list", "watch"]
+#### 🔹 Admin Binding
+
+      apiVersion: rbac.authorization.k8s.io/v1
+      kind: RoleBinding
+      metadata:
+        name: admin-binding
+        namespace: bankapp-namespace
+      subjects:
+        kind: User
+        name: admin-user
+        apiGroup: rbac.authorization.k8s.io
+        roleRef:
+          kind: Role
+          name: admin-role
+         apiGroup: rbac.authorization.k8s.io
+  
+#### 🔹 Developer Binding
+    apiVersion: rbac.authorization.k8s.io/v1
+    kind: RoleBinding
+    metadata:
+      name: developer-binding
+      namespace: bankapp-namespace
+    subjects:
+     kind: User
+      name: developer-user
+      apiGroup: rbac.authorization.k8s.io
+      roleRef:
+        kind: Role
+        name: developer-role
+        apiGroup: rbac.authorization.k8s.io
+#### 🔹 Tester Binding
+     apiVersion: rbac.authorization.k8s.io/v1
+     kind: RoleBinding
+     metadata:
+       name: tester-binding
+       namespace: bankapp-namespace
+     subjects:
+      kind: User
+      name: tester-user
+      apiGroup: rbac.authorization.k8s.io
+     roleRef:
+     kind: Role
+     name: tester-role
+     apiGroup: rbac.authorization.k8s.io
+#### ✅ Apply All Configs
+
+kubectl apply -f admin-role.yml
+
+kubectl apply -f developer-role.yml
+
+kubectl apply -f tester-role.yml
+
+kubectl apply -f rolebindings.yml
+
+3. **Create Test Accounts:**
+   - Simulate real-world usage by creating user accounts for each role and verifying access.
+   
+   **kubectl delete pod <pod-name> -n bankapp-namespace --as=developer-user**
+   
+   👉 Expected:
+   
+       Error: forbidden
+   
+   **kubectl get pods -n bankapp-namespace --as=developer-user**
+   
+   **kubectl create deployment test --image=nginx -n bankapp-namespace --as=tester-user**
+   
+     👉 Expected:
+   
+        forbidden
+   
+   **kubectl delete pod <pod-name> -n bankapp-namespace --as=admin-user**
+   
+     👉 Works ✅
+   
+5. **Optional Enhancement:**
+
+   - Simulate an unauthorized action (e.g., a Developer attempting to delete a critical resource) and document how RBAC prevents it.
+     
+     **kubectl logs -n kube-system <api-server-pod>**
+     
+   - Analyze RBAC logs (if available) to verify that unauthorized access attempts are recorded.
+     
+7. **Document in `solution.md`:**
+   
+   - Include screenshots or logs of your RBAC configuration.
+     
+   - Describe the roles, permissions, and potential risks mitigated by proper RBAC implementation.
+     
+   #### 🔹 Roles & Permissions
+   
+Role	Permissions
+
+Admin ->	Full access
+
+Developer ->	Create, update, view (no delete)
+
+Tester ->	Read-only
+#### 🔹 Security Benefits
+
+- Prevents accidental deletion of critical resources
+- Enforces least privilege access
+- Protects production workloads
+- Separates responsibilities
+
+#### 🔹 Risks Mitigated
+- ❌ Accidental resource deletion
+- ❌ Unauthorized deployments
+- ❌ Data exposure
+- ❌ Privilege escalation
