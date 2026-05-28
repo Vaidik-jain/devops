@@ -187,3 +187,385 @@ Improve the flexibility and reusability of your Terraform configuration by using
   test changes safely in dev/staging
   deploy stable infrastructure to prod
   manage all environments consistently
+
+  
+## Task 4: Create and Use Terraform Modules
+
+**Scenario:**  
+Enhance reusability by creating a Terraform module for commonly used resources, and integrate it into your main configuration.
+
+
+**Steps:**
+1. **Create a Module:**  
+   - In a separate directory (e.g., `modules/ec2_instance`), create a module with `main.tf`, `variables.tf`, and `outputs.tf` for provisioning an EC2 instance.
+
+<img width="783" height="596" alt="Screenshot (675)" src="https://github.com/user-attachments/assets/88c55dc0-1949-43f0-bb7c-d354a3c334ca" />
+
+<img width="942" height="503" alt="Screenshot (676)" src="https://github.com/user-attachments/assets/b5ed3e5d-4c78-497a-94d2-166365d16bbc" />
+
+<img width="844" height="469" alt="Screenshot (677)" src="https://github.com/user-attachments/assets/9cf823f7-a3b1-4a91-92ca-c4a38cde6b5d" />
+
+2. **Reference the Module:**  
+   - Update your main configuration to call the module using a `module` block.
+
+  <img width="811" height="610" alt="Screenshot (678)" src="https://github.com/user-attachments/assets/76a36944-3f97-4f98-98a7-565ed0aa1cd6" />
+
+3. **Document in `solution.md`:**  
+   - Provide the module code and the main configuration.
+   - Explain how modules promote consistency and reduce code duplication.
+
+### How Modules Promote Consistency
+
+- Every environment (Dev, Test, Prod) uses the same infrastructure template.
+- Naming conventions, tags, security groups, and configurations remain uniform.
+- Changes made inside the module automatically apply wherever the module is used.
+- Reduces configuration drift between environments.
+
+### How Modules Reduce Code Duplication
+
+**Without modules:**
+
+- You repeatedly write EC2, VPC, Security Group, or S3 configurations in multiple files/projects.
+
+**With modules:**
+
+- Create reusable templates once.
+- Pass different values using variables.
+- Reuse the same module multiple times.
+
+**Interview Questions:**
+#### 1. What are the advantages of using modules in Terraform?
+
+- Terraform modules offer these key advantages:
+- Reusability: Write code once; deploy multiple times.
+- Consistency: Enforces standard security and compliance blueprints.
+- Simplicity: Hides complex code behind simple inputs.
+- Organization: Breaks massive configurations into manageable pieces.
+- Speed: Accelerates deployment using pre-built community templates.
+
+#### 2. How would you structure a module for reusable infrastructure components?
+
+modules/
+
+└── compute-instance/
+
+    ├── README.md      # Documentation
+    
+    ├── main.tf        # Core resource logic
+    
+    ├── variables.tf   # Configuration inputs
+    
+    ├── outputs.tf     # Exported data
+    
+    └── providers.tf   # Provider requirements
+
+## Task 5: Resource Dependencies and Lifecycle Management
+
+**Scenario:**  
+Ensure correct resource creation order and safe updates by managing dependencies and customizing resource lifecycles.
+
+**Steps:**
+1. **Define Resource Dependencies:**
+   Terraform automatically detects dependencies when one resource references another.
+   In some cases, you must explicitly define dependencies using the depends_on meta-argument.
+   
+   - Use the `depends_on` meta-argument in your configuration to specify dependencies explicitly.
+
+     <img width="710" height="380" alt="Screenshot (679)" src="https://github.com/user-attachments/assets/b5d1bae5-aa5d-408a-8a1d-5d25ff322260" />
+
+### Why Use depends_on?
+- Ensures Terraform creates the security group before launching the EC2 instance.
+- Prevents resource creation failures caused by missing dependencies.
+- Useful when dependencies are not automatically detected.
+
+2. **Configure Resource Lifecycles:**
+
+Terraform lifecycle rules help manage how infrastructure changes are applied.
+
+Example: Using create_before_destroy
+
+resource "aws_instance" "app_server" {
+
+  ami           = "ami-0abcdef1234567890"
+  
+  instance_type = "t2.micro"
+  
+
+  lifecycle {
+  
+    create_before_destroy = true
+    
+  }
+  
+}
+
+Purpose of create_before_destroy
+
+Normally, Terraform:
+
+- Destroys the old resource
+- Creates the new resource
+
+With create_before_destroy = true:
+
+- Terraform creates the new resource first
+- Then destroys the old resource
+
+This minimizes downtime during updates.
+
+3. **Document in `solution.md`:**  
+   - Include examples of resource dependencies and lifecycle configurations in your code.
+  
+   <img width="999" height="603" alt="Screenshot (680)" src="https://github.com/user-attachments/assets/7282a45d-84aa-4182-85a6-4ecdd67fa8bf" />
+   
+
+   - Explain how these settings prevent downtime during updates.
+
+1. Resource Dependencies
+
+- Ensure infrastructure components are created in the correct order.
+- Avoid failures caused by missing or partially configured resources.
+  
+2. Lifecycle Configuration
+   
+- create_before_destroy keeps the old resource running until the replacement is fully available.
+- Reduces service interruptions during deployments and updates.
+- Useful in production systems where availability is important.
+
+**Interview Questions:**
+- How does Terraform handle resource dependencies?
+  
+   - Terraform automatically builds a dependency graph using resource references.
+   - If dependencies are not directly referenced, depends_on can be used to define them explicitly.
+   
+- Can you explain the purpose of the `create_before_destroy` lifecycle argument?
+   
+  It ensures a new resource is created before the old resource is destroyed, helping prevent downtime during infrastructure updates.
+
+## Task 6: Infrastructure Drift Detection and Change Management
+
+**Scenario:**  
+In production, changes might occur outside of Terraform. Use Terraform commands to detect infrastructure drift and manage changes.
+
+**Steps:**
+1. **Detect Drift:**  
+   - Run `terraform plan` to identify differences between your configuration and the actual infrastructure.
+   
+
+## 1. Detect Drift
+
+Infrastructure drift occurs when the actual infrastructure differs from the Terraform configuration or state file.
+
+Terraform can detect drift using the following command:
+
+```bash
+terraform plan
+```
+
+This command compares:
+
+* Terraform configuration files
+* Terraform state file
+* Actual infrastructure in the cloud provider
+
+and shows any differences.
+
+---
+
+## Example: Drift Detection
+
+Suppose an EC2 instance type was manually changed in AWS from `t2.micro` to `t2.small`.
+
+### Terraform Configuration
+
+```hcl id="0a5j3r"
+resource "aws_instance" "web_server" {
+  ami           = "ami-0abcdef1234567890"
+  instance_type = "t2.micro"
+}
+```
+
+### Drift Detection Output
+
+```bash
+terraform plan
+```
+
+Example output:
+
+```bash
+~ instance_type = "t2.small" -> "t2.micro"
+```
+
+This indicates the infrastructure has drifted from the Terraform configuration.
+
+---
+
+# 2. Reconcile Changes
+
+When drift is detected, there are two common approaches:
+
+## Approach 1: Reapply Terraform Configuration
+
+If the manual changes are not intended:
+
+```bash
+terraform apply
+```
+
+Terraform updates the infrastructure to match the configuration files.
+
+### Use Case
+
+* Unauthorized manual changes
+* Restoring infrastructure consistency
+* Enforcing Infrastructure as Code practices
+
+---
+
+## Approach 2: Update Terraform Configuration or State
+
+If the manual changes are intentional:
+
+### Update Configuration
+
+Modify the Terraform code to match the real infrastructure.
+
+Example:
+
+```hcl id="dkx1sh"
+resource "aws_instance" "web_server" {
+  ami           = "ami-0abcdef1234567890"
+  instance_type = "t2.small"
+}
+```
+
+Then run:
+
+```bash
+terraform plan
+terraform apply
+```
+
+---
+
+## Refresh Terraform State
+
+You can also refresh Terraform state information:
+
+```bash
+terraform refresh
+```
+
+or
+
+```bash
+terraform plan -refresh-only
+```
+
+This updates the state file with the latest infrastructure information.
+
+---
+
+# 3. Importance of Change Management in Infrastructure as Code
+
+Proper change management is critical in Terraform environments because:
+
+* Prevents configuration drift
+* Maintains consistency across environments
+* Reduces unexpected failures in production
+* Ensures infrastructure changes are version-controlled
+* Improves auditing and rollback capabilities
+
+---
+
+# Best Practices to Prevent Drift
+
+* Avoid manual infrastructure changes in cloud consoles
+* Use CI/CD pipelines for deployments
+* Store Terraform state remotely
+* Enable code reviews for infrastructure changes
+* Run `terraform plan` before every deployment
+* Use monitoring and policy enforcement tools
+
+---
+
+# Interview Questions
+
+## What is infrastructure drift, and why is it a concern in production environments?
+
+Infrastructure drift happens when the actual infrastructure differs from the Terraform configuration or state file due to manual changes or external updates.
+
+It is a concern because it can:
+
+* Cause deployment failures
+* Create inconsistent environments
+* Introduce security or compliance risks
+* Make troubleshooting difficult
+
+---
+
+## How would you resolve discrepancies between your Terraform configuration and actual infrastructure?
+
+1. Run `terraform plan` to identify differences.
+2. Determine whether the infrastructure changes are intentional.
+3. If unintentional:
+
+   * Run `terraform apply` to restore the desired state.
+4. If intentional:
+
+   * Update Terraform configuration and state to reflect the changes.
+5. Re-run `terraform plan` to confirm consistency.
+
+
+## Task 7: (Optional) Dynamic Pipeline Parameterization for Terraform
+
+**Scenario:**  
+Enhance your Terraform configurations by using dynamic input parameters and conditional logic to deploy resources differently based on environment-specific values.
+
+**Steps:**
+1. **Enhance Variables with Conditionals:**  
+   - Update your `variables.tf` to include default values and conditional expressions for environment-specific configurations.
+
+   <img width="1028" height="447" alt="Screenshot (681)" src="https://github.com/user-attachments/assets/c4bc0d9e-82af-4d17-8e8e-4e1e73b3f6e1" />
+
+2. **Apply Conditional Logic:**  
+   - Use conditional expressions in your resource definitions to adjust attributes based on variable values.
+
+   <img width="545" height="83" alt="Screenshot (682)" src="https://github.com/user-attachments/assets/e2b32c46-fd79-4a66-a69a-023ea76111fe" />
+
+3. **Document in `solution.md`:**  
+   - Explain how dynamic parameterization improves flexibility.
+     
+    **Dynamic parameterization helps by:**
+
+- Reusing the same Terraform code across environments
+- Reducing code duplication
+- Simplifying deployment management
+- Making infrastructure scalable and maintainable
+- Supporting automated CI/CD pipelines
+
+Instead of maintaining separate files for dev, staging, and production, one configuration can dynamically adapt using variables and conditionals.
+
+**Interview Questions**
+
+1.How do conditional expressions in Terraform improve configuration flexibility?
+
+Conditional expressions allow Terraform resources to dynamically change values based on variables or environment settings.
+
+This helps:
+
+- Reuse configurations
+- Reduce duplicate code
+- Support multiple deployment environments
+- Automate infrastructure decisions
+
+2.Provide an example scenario where dynamic parameters are critical in a deployment pipeline.
+
+In a CI/CD pipeline:
+
+- Development environments may use low-cost resources like t2.micro
+- Production environments may require larger instances like t2.large
+
+Using conditional expressions, the same Terraform configuration can automatically provision different infrastructure depending on the deployment stage, improving automation and consistency.
+
